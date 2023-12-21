@@ -2017,7 +2017,7 @@ class PhiAdapter(BaseModelAdapter):
         return model, tokenizer
 
     def get_default_conv_template(self, model_path: str) -> Conversation:
-        return get_conv_template("phi-2")
+        return get_conv_template("zero_shot")
 
 
 # Note: the registration order matters.
