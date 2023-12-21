@@ -888,7 +888,7 @@ register_conv_template(
         name="phi-2",
         roles=("User", "Assistant"),
         offset=0,
-        sep_style=SeparatorStyle.ADD_COLON_SINGLE,
+        sep_style=SeparatorStyle.ADD_COLON_SPACE_SINGLE,
         sep="\n",
         stop_str="<|endoftext|>",
     )
