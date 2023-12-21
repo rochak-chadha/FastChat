@@ -2006,7 +2006,7 @@ class PhiAdapter(BaseModelAdapter):
         return "phi-2" in model_path.lower()
     
     def load_model(self, model_path: str, from_pretrained_kwargs: dict):
-        model, tokenizer = super().load_model(model_path, from_pretrained_kwargs)
+        #model, tokenizer = super().load_model(model_path, from_pretrained_kwargs)
         model = AutoModelForCausalLM.from_pretrained(
             model_path,
             trust_remote_code=True,
