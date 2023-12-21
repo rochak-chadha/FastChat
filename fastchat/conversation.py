@@ -889,7 +889,8 @@ register_conv_template(
         roles=("User", "Assistant"),
         offset=0,
         sep_style=SeparatorStyle.ADD_COLON_SINGLE,
-        sep="\n",
+        sep="<|endoftext|>",
+        stop_str="<|endoftext|>",
     )
 )
 
