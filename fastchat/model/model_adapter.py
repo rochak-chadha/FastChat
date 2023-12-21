@@ -2010,12 +2010,11 @@ class PhiAdapter(BaseModelAdapter):
         model = AutoModelForCausalLM.from_pretrained(
             model_path,
             trust_remote_code=True,
-            **from_pretrained_kwargs,
         )
         tokenizer = AutoTokenizer.from_pretrained(
             model_path, trust_remote_code=True
         )
-        model.config.eos_token_id = tokenizer.eos_token_id
+        
         return model, tokenizer
 
     def get_default_conv_template(self, model_path: str) -> Conversation:
