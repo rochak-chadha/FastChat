@@ -891,6 +891,7 @@ register_conv_template(
         sep_style=SeparatorStyle.ADD_COLON_SPACE_SINGLE,
         sep="\n",
         stop_str="<|endoftext|>",
+        stop_token_ids= [50256],
     )
 )
 

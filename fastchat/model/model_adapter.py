@@ -2004,6 +2004,18 @@ class PhiAdapter(BaseModelAdapter):
 
     def match(self, model_path: str):
         return "phi-2" in model_path.lower()
+    
+    def load_model(self, model_path: str, from_pretrained_kwargs: dict):
+        model, tokenizer = super().load_model(model_path, from_pretrained_kwargs)
+        model = AutoModelForCausalLM.from_pretrained(
+            model_path,
+            **from_pretrained_kwargs,
+        )
+        tokenizer = AutoTokenizer.from_pretrained(
+            model_path, trust_remote_code=True
+        )
+        model.config.eos_token_id = tokenizer.eos_token_id
+        return model, tokenizer
 
     def get_default_conv_template(self, model_path: str) -> Conversation:
         return get_conv_template("phi-2")
