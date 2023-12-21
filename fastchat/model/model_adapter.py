@@ -2009,6 +2009,7 @@ class PhiAdapter(BaseModelAdapter):
         model, tokenizer = super().load_model(model_path, from_pretrained_kwargs)
         model = AutoModelForCausalLM.from_pretrained(
             model_path,
+            trust_remote_code=True,
             **from_pretrained_kwargs,
         )
         tokenizer = AutoTokenizer.from_pretrained(
