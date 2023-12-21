@@ -51,7 +51,7 @@ def prepare_logits_processor(
         processor_list.append(TemperatureLogitsWarper(temperature))
     if repetition_penalty > 1.0:
         processor_list.append(RepetitionPenaltyLogitsProcessor(repetition_penalty))
-    if 1e-8 < top_p < 1.0:
+    if 1e-8 <= top_p < 1.0:
         processor_list.append(TopPLogitsWarper(top_p))
     if top_k > 0:
         processor_list.append(TopKLogitsWarper(top_k))
@@ -77,9 +77,9 @@ def generate_stream(
     temperature = float(params.get("temperature", 1.0))
     repetition_penalty = float(params.get("repetition_penalty", 1.0))
     #top_p = float(params.get("top_p", 1.0))
-    top_p = 0.35,
+    top_p = 0.35
     #top_k = int(params.get("top_k", -1))  # -1 means disable
-    top_k = 50,
+    top_k = 50
     max_new_tokens = int(params.get("max_new_tokens", 256))
     logprobs = params.get("logprobs", None)  # FIXME: Support logprobs>1.
     echo = bool(params.get("echo", True))
