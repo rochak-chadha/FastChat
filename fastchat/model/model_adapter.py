@@ -2007,7 +2007,7 @@ class PhiAdapter(BaseModelAdapter):
         return "phi-2" in model_path.lower()
     
     def load_model(self, model_path: str, from_pretrained_kwargs: dict):
-        model = PhiForCausalLM.from_pretrained(
+        model = AutoModelForCausalLM.from_pretrained(
             model_path, trust_remote_code=True
         )
         tokenizer = AutoTokenizer.from_pretrained(
