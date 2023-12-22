@@ -167,7 +167,7 @@ def generate_stream(
                 #input_ids=torch.as_tensor([input_ids], device=device)
                 #inputs = model.prepare_inputs_for_generation(input_ids=input_ids, past_key_values=past_key_values if not sent_interrupt else None)
                 print("errr here...")
-                out = model(**inputs)
+                out = model.generate(**inputs)
                 '''out = model(
                     input_ids=torch.as_tensor(
                         [[token] if not sent_interrupt else output_ids],
