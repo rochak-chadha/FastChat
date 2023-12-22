@@ -164,9 +164,9 @@ def generate_stream(
 
                 logits = model.lm_head(out[0])
             else:
+                print("entered decoding for decoder model")
                 input_ids = torch.as_tensor([[token]], device=device)
                 inputs = model.prepare_inputs_for_generation(input_ids=input_ids, past_key_values=past_key_values if not sent_interrupt else None)
-                print("errr here...")
                 out = model(**inputs)
                 '''out = model(
                     input_ids=torch.as_tensor(
@@ -178,6 +178,8 @@ def generate_stream(
                  )  
                 sent_interrupt = False'''
                 logits = out.logits
+                probabilities = torch.nn.functional.softmax(logits, dim=-1)
+                token = torch.argmax(probabilities, dim=-1)  # Greedy decoding: choose the most likely token
             past_key_values = out.past_key_values
 
         if logits_processor:
