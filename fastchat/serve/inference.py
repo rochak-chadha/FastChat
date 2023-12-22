@@ -123,7 +123,7 @@ def generate_stream(
     stopped = False
     for i in range(max_new_tokens):
         if i == 0:  # prefill
-            inputs = model.prepare_inputs_for_generation(input_ids=torch.as_tensor([[token] if not sent_interrupt else output_ids], device=device), past_key_values=past_key_values if not sent_interrupt else None)
+            inputs = model.prepare_inputs_for_generation(input_ids=input_ids)
             if model.config.is_encoder_decoder:
                 out = model.decoder(
                     input_ids=start_ids,
