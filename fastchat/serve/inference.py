@@ -165,7 +165,7 @@ def generate_stream(
                 logits = model.lm_head(out[0])
             else:
                 #input_ids=torch.as_tensor([input_ids], device=device)
-                inputs = model.prepare_inputs_for_generation(input_ids=input_ids, past_key_values=past_key_values if not sent_interrupt else None)
+                #inputs = model.prepare_inputs_for_generation(input_ids=input_ids, past_key_values=past_key_values if not sent_interrupt else None)
                 out = model(**inputs)
                 '''out = model(
                     input_ids=torch.as_tensor(
