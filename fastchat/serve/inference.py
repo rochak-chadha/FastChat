@@ -129,7 +129,7 @@ def generate_stream(
                 )
                 logits = model.lm_head(out[0])
             else:
-                inputs = model.prepare_inputs_for_generation(input_ids=input_ids)
+                inputs = model.prepare_inputs_for_generation(input_ids=start_ids)
                 out = model(**inputs, use_cache=True)
                 logits = out.logits
             past_key_values = out.past_key_values
