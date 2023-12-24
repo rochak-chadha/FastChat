@@ -158,7 +158,7 @@ def generate_stream(
 
                 logits = model.lm_head(out[0])
             else:
-                out = model(**inputs, use_cache=True, past_key_values=past_key_values if not sent_interrupt else None)
+                out = model( input_ids=inputs["input_ids"], past_key_values = past_key_values, use_cache=True, attention_mask=inputs.get("attention_mask", None))
                 sent_interrupt = False
                 logits = out.logits
             past_key_values = out.past_key_values
