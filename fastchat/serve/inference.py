@@ -77,7 +77,9 @@ def generate_stream(
     temperature = float(params.get("temperature", 1.0))
     repetition_penalty = float(params.get("repetition_penalty", 1.0))
     top_p = float(params.get("top_p", 1.0))
+    #top_p = 0.35
     top_k = int(params.get("top_k", -1))  # -1 means disable
+    #top_k = 50
     max_new_tokens = int(params.get("max_new_tokens", 256))
     logprobs = params.get("logprobs", None)  # FIXME: Support logprobs>1.
     echo = bool(params.get("echo", True))
@@ -121,6 +123,7 @@ def generate_stream(
     stopped = False
     for i in range(max_new_tokens):
         if i == 0:  # prefill
+            #token = input_ids[-1]
             if model.config.is_encoder_decoder:
                 out = model.decoder(
                     input_ids=start_ids,
@@ -129,9 +132,18 @@ def generate_stream(
                 )
                 logits = model.lm_head(out[0])
             else:
-                out = model(input_ids=start_ids, use_cache=True)
+                # check if model path contains phi-2
+#                if "phi-2" in model_path.lower():
+                input_to_decoder = torch.as_tensor([output_ids], device=device)
+                out = model(input_ids=input_to_decoder, use_cache=False)
                 logits = out.logits
-            past_key_values = out.past_key_values
+                '''
+                input_ids=torch.as_tensor([input_ids], device=device)
+                #inputs = model.prepare_inputs_for_generation(input_ids=input_ids, past_key_values=past_key_values if not sent_interrupt else None)
+                out = model(input_ids=start_ids, use_cache=True)
+               # out = model(**inputs)
+                logits = out.logits '''
+            #past_key_values = out.past_key_values
 
             if logprobs is not None:
                 # Prefull logprobs for the prompt.
@@ -157,6 +169,14 @@ def generate_stream(
 
                 logits = model.lm_head(out[0])
             else:
+                
+                #input_ids = torch.as_tensor([[token]], device=device)
+                #inputs = model.prepare_inputs_for_generation(input_ids=input_ids, past_key_values=past_key_values if not sent_interrupt else None)
+                #out = model(**inputs)
+                input_to_decoder = torch.as_tensor([output_ids], device=device)
+                out = model(input_ids=input_to_decoder, use_cache=False)
+                logits = out.logits
+                '''
                 out = model(
                     input_ids=torch.as_tensor(
                         [[token] if not sent_interrupt else output_ids],
@@ -164,10 +184,12 @@ def generate_stream(
                     ),
                     use_cache=True,
                     past_key_values=past_key_values if not sent_interrupt else None,
-                )
+                 )  
                 sent_interrupt = False
                 logits = out.logits
-            past_key_values = out.past_key_values
+            #    probabilities = torch.nn.functional.softmax(logits, dim=-1)
+            #    token = torch.argmax(probabilities, dim=-1)  # Greedy decoding: choose the most likely token '''
+            #past_key_values = out.past_key_values
 
         if logits_processor:
             if repetition_penalty > 1.0:
