@@ -158,7 +158,9 @@ def generate_stream(
 
                 logits = model.lm_head(out[0])
             else:
-                out = model( input_ids=inputs["input_ids"], past_key_values = past_key_values, use_cache=True, attention_mask=inputs.get("attention_mask", None))
+                new_ids = torch.as_tensor([output_ids], device=device)
+                model_inputs = model.prepare_inputs_for_generation(input_ids=new_ids)
+                out = model(model_inputs["inputs"], use_cache=True, past_key_values=past_key_values)
                 sent_interrupt = False
                 logits = out.logits
             past_key_values = out.past_key_values

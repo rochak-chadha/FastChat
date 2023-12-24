@@ -448,3 +448,10 @@ register_model_info(
     "https://huggingface.co/upstage/SOLAR-10.7B-Instruct-v1.0",
     "A Llama2 fine-tune developed by upstage.ai that incorporates depth up-scaling.",
 )
+
+register_model_info(
+    ["phi-2"],
+    "phi-2",
+    "https://huggingface.co/microsoft/phi-2",
+    "Phi-2 is a small language model developed by Microsoft.",
+)

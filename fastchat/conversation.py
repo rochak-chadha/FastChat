@@ -882,6 +882,21 @@ register_conv_template(
     )
 )
 
+# phi-2 template
+# source: https://huggingface.co/microsoft/phi-2
+register_conv_template(
+    Conversation(
+        name="phi-2",
+        roles=("User", "Assistant"),
+        offset=0,
+        sep_style=SeparatorStyle.ADD_COLON_SPACE_SINGLE,
+        sep="\n",
+        stop_str="<|endoftext|>",
+        stop_token_ids= [50256],
+    )
+)
+
+
 # tigerbot template
 register_conv_template(
     Conversation(

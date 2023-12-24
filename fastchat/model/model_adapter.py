@@ -23,6 +23,7 @@ from transformers import (
     AutoTokenizer,
     LlamaTokenizer,
     LlamaForCausalLM,
+    PhiForCausalLM,
     T5Tokenizer,
 )
 
@@ -1999,6 +2000,28 @@ class SolarAdapter(BaseModelAdapter):
         return get_conv_template("solar")
 
 
+class PhiAdapter(BaseModelAdapter):
+    """The model adapter for microsoft/phi-2 model"""
+    use_fast_tokenizer = False
+
+    def match(self, model_path: str):
+        return "phi-2" in model_path.lower()
+
+    def load_model(self, model_path: str, from_pretrained_kwargs: dict):
+        model = AutoModelForCausalLM.from_pretrained(
+            model_path, trust_remote_code=True
+        )
+        tokenizer = AutoTokenizer.from_pretrained(
+            model_path, trust_remote_code=True
+        )
+
+        return model, tokenizer
+
+    def get_default_conv_template(self, model_path: str) -> Conversation:
+        return get_conv_template("zero_shot")
+
+
+
 # Note: the registration order matters.
 # The one registered earlier has a higher matching priority.
 register_model_adapter(PeftModelAdapter)
@@ -2076,6 +2099,8 @@ register_model_adapter(DeepseekCoderAdapter)
 register_model_adapter(DeepseekChatAdapter)
 register_model_adapter(MetaMathAdapter)
 register_model_adapter(SolarAdapter)
+register_model_adapter(PhiAdapter)
+
 
 # After all adapters, try the default base adapter.
 register_model_adapter(BaseModelAdapter)
