@@ -157,7 +157,7 @@ def generate_stream(
                 sent_interrupt = False
                 logits = model.lm_head(out[0])
             else:
-                new_ids = torch.as_tensor([output_ids], device=device)
+                new_ids = torch.as_tensor([[token] if not sent_interrupt else output_ids],device=device)
                 model_inputs = model.prepare_inputs_for_generation(input_ids=new_ids)
                 out = model(model_inputs["input_ids"], use_cache=True, past_key_values=past_key_values)
                 sent_interrupt = False
